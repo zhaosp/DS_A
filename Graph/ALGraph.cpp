@@ -104,3 +104,85 @@ Status ALGraph::TopologicalSort() {
 void ALGraph::FindInDegree(int *indegree) {
 
 }
+
+/*
+ * 有向图G采用邻接表存储
+ * 求各顶点事件的最早发生时间ve
+ * T为拓扑序列的顶点栈，S为入度为0的顶点栈
+ * 若G无回路，则栈T返回G的一个拓扑序列，返回值OK，否则返回ERROR
+ *
+ * */
+Status ALGraph::TopologicalOrder(Stack &T) {
+    // 求各顶点入度
+    int indegree[vexnum];
+    FindInDegree(indegree);
+
+    // 初始化拓扑序列顶点栈
+    T.InitStack();
+    int count(0);
+    for(int i=0; i<vexnum; i++)
+        ve[i] = 0;
+
+    while (!S.StackEmpty()) {
+        int j;
+        S.Pop(j);
+        T.Push(j);
+        ++count;
+
+        for(ArcNode* p = vertices[j].firstarc; p; p=p->nextarc) {
+            int k = p->adjvex;
+            if(--indegree[k] == 0)
+                S.Push(k);
+
+            // fixme: 这是要干啥？
+            if(ve[j] + *(p->info) > ve[k])
+                ve[k] = ve[j] + *(p->info);
+        }
+    }
+
+    if(count < vexnum)
+        return ERROR;
+
+    return OK;
+}
+
+/*
+ * 有向图G采用邻接表存储
+ * 输出G的各项关键活动
+ *
+ * */
+Status ALGraph::CriticalPath() {
+    Stack T;
+    if(!TopologicalOrder(T))
+        return ERROR;
+
+    // 初始化顶点事件的最迟发生时间
+    for(int i=0; i<vexnum; i++)
+        vl[i] = ve[i];
+
+    while (!T.StackEmpty()) {// 按拓扑逆序求各顶点的vl值
+        int j;
+        T.Pop(j);
+        for(ArcNode* p = vertices[j].firstarc; p; p = p->nextarc) {
+            int k = p->adjvex;
+            int dut = *(p->info);
+
+            // fixme: 这是要干啥？
+            if(vl[k]-dut < vl[j])
+                vl[j] = vl[k] - dut;
+        }
+
+        for(int j=0; j<vexnum; j++) {
+            for(ArcNode *p = vertices[j].firstarc; p; p=p->nextarc) {
+                int k = p->adjvex;
+                int dut = *(p->info);
+                int ee = ve[j];  // 最早开始时间
+                int el = vl[k] - dut;  // 最迟开始时间
+                char tag = ee == el?'*':' '; // 关键活动 打印*号
+                printf("%d %d %d %d %d %c", j, k, dut, ee, el, tag);
+            }
+        }
+    }
+
+    return OK;
+}

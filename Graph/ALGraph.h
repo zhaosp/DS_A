@@ -6,6 +6,7 @@
 #define DATA_STRUCTURE_ALGRAPH_H
 
 #include "utility.h"
+#include "../Stack/Stack.h"
 
 typedef struct ArcNode {
     int adjvex; // 弧所指向顶点的位置，也就是VertexType[]数组的下标，也就是vertices的下标
@@ -28,10 +29,17 @@ public:
     void DFSArticul(int v);
     Status TopologicalSort();
     void FindInDegree(int* indegree);
+    Status TopologicalOrder(Stack &T);
+    Status CriticalPath();
 public:
     AdjList vertices;  // 头结点数组
     int vexnum, arcnum;
     GraphKind kind;
+    Stack S;
+
+    // fixme: 这俩初始化的时机在哪？
+    int *ve;
+    int *vl;
 };
 
 #endif //DATA_STRUCTURE_ALGRAPH_H
