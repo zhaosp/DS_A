@@ -176,7 +176,7 @@ Status ALGraph::CriticalPath() {
             for(ArcNode *p = vertices[j].firstarc; p; p=p->nextarc) {
                 int k = p->adjvex;
                 int dut = *(p->info);
-                int ee = ve[j];  // 最早开始时间
+                int ee = ve[j];  // 最早开始时间，第一个e是edge，第二个e是early
                 int el = vl[k] - dut;  // 最迟开始时间
                 char tag = ee == el?'*':' '; // 关键活动 打印*号
                 printf("%d %d %d %d %d %c", j, k, dut, ee, el, tag);

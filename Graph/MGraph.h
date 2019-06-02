@@ -10,7 +10,10 @@
 typedef struct ArcCell {
     VRType adj; // 对于带权的图，是权值类型；对于无权图，用1/0表示相邻否
     InfoType *info;
-}ArcCell, AdjMatrix[MAX_VERTEX_NUM][MAX_VERTEX_NUM];
+}ArcCell, AdjMatrix[MAX_VERTEX_NUM][MAX_VERTEX_NUM], ShortPathTable[MAX_VERTEX_NUM];
+
+typedef bool PathMatrix[MAX_VERTEX_NUM][MAX_VERTEX_NUM];  // 路径矩阵
+typedef int DistancMatrix[MAX_VERTEX_NUM][MAX_VERTEX_NUM];  // 带权长度矩阵
 
 /*
  * 图的邻接矩阵表示
@@ -25,6 +28,8 @@ public:
     Status CreateUDN();
     int LocateVex(VertexType v);
     void Input(InfoType info);
+    void ShortestPath_DIJ(int v0, PathMatrix &P, ShortPathTable &D);
+    void ShortestPath_FLOYD(PathMatrix P[], DistancMatrix &D);
 public:
     VertexType vexs[MAX_VERTEX_NUM];
     AdjMatrix arcs;
