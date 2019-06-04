@@ -4,3 +4,7 @@
 
 #include "tmp.h"
 
+template <typename T>
+int compare(const T v1, const T v2) {
+
+}

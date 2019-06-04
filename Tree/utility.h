@@ -5,6 +5,12 @@
 #ifndef DATA_STRUCTURE_UTILITY_H
 #define DATA_STRUCTURE_UTILITY_H
 
-typedef int ElemType;
+#define MAX_TREE_SIZE 100
+#define OK 1
+#define ERROR 0
+
+typedef int TElemType;
+typedef bool Status;
+
 
 #endif //DATA_STRUCTURE_UTILITY_H

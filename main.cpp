@@ -1,23 +1,24 @@
 #include <iostream>
-#include "Sorter.h"
-#include <string.h>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
-char* fun(char *p1, char *p2) {
-    int i = 0;
-    i = strcmp(p1,p2);
-
-    if (0 == i)
-        return p1;
+template <typename T1, typename T2>
+int compare(T1 v, T2 w) {
+    if(v < w)
+        return -1;
+    else if(v > w)
+        return 1;
     else
-        return p2;
+        return 0;
 }
 
+
 int main() {
-    char* (*pf)(char *p1, char *p2);
-    pf = &fun;
-    printf("%s", (*pf)("aa","bb"));
+    printf("%p\t%p\n", "hi", "world");
+    printf("%d\n", compare("hi", "world"));
+    printf("%d\n", compare(string("hi"), string("world")));
 
     return 0;
 }
